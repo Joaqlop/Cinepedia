@@ -20,8 +20,38 @@ class TheMoviedbDataSource extends MovieDataSource {
 
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
-    final response = await url.get('/movie/now_playing');
-    final movieResponse = TheMovieDBResponse.fromJson(response.data);
+    final response = await url.get('/movie/now_playing', queryParameters: {
+      'page': page,
+    });
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getPopular({int page = 1}) async {
+    final response = await url.get('/trending/movie/week', queryParameters: {
+      'page': page,
+    });
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getUpcoming({int page = 1}) async {
+    final response = await url.get('/movie/upcoming', queryParameters: {
+      'page': page,
+    });
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getTopRated({int page = 1}) async {
+    final response = await url.get('/movie/top_rated', queryParameters: {
+      'page': page,
+    });
+    return _jsonToMovies(response.data);
+  }
+
+  List<Movie> _jsonToMovies(Map<String, dynamic> json) {
+    final movieResponse = TheMovieDBResponse.fromJson(json);
     final List<Movie> movies = movieResponse.results
         .where((movie) => movie.posterPath != 'no-poster')
         .map((movie) => MovieMapper.movieDBToEntity(movie))
