@@ -1,4 +1,4 @@
-import 'package:cinepedia/config/helpers/human_formats.dart';
+import 'package:cinepedia/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,14 +41,12 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final popularMovies = ref.watch(popularMoviesProvider);
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
     final loading = ref.watch(initialLoadingProvider);
-
     if (loading) return const Loader();
 
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          floating: true,
-          backgroundColor: Colors.black.withOpacity(0.5),
+          backgroundColor: AppColor.vulcan,
           flexibleSpace: const FlexibleSpaceBar(
             titlePadding: EdgeInsets.symmetric(horizontal: 10),
             title: CustomAppBar(),
@@ -59,24 +57,19 @@ class _HomeViewState extends ConsumerState<_HomeView> {
             (context, index) {
               return Column(
                 children: [
-                  Stack(
-                    children: [
-                      const SlideShowBackground(),
-                      SlideShow(movies: slideShowMovies),
-                    ],
-                  ),
+                  SlideShow(movies: slideShowMovies),
+                  const SizedBox(height: 15),
                   MovieHorizontalListView(
-                    movies: nowPlayingMovies,
+                    movies: nowPlayingMovies.sublist(0, 15),
                     title: 'En cines',
-                    subtitle: HumanFormats.today(DateTime.now()),
-                    loadNextPage: () => ref
-                        .read(nowPlayingMoviesProvider.notifier)
-                        .loadNextPage(),
+                    subtitle: Helper.getToday(DateTime.now()),
+                    loadNextPage: () =>
+                        ref.read(nowPlayingMoviesProvider.notifier),
                   ),
                   MovieHorizontalListView(
                     movies: popularMovies,
                     title: 'Populares',
-                    subtitle: HumanFormats.thisMonth(DateTime.now()),
+                    subtitle: Helper.getThisMonth(DateTime.now()),
                     loadNextPage: () =>
                         ref.read(popularMoviesProvider.notifier).loadNextPage(),
                   ),
@@ -87,7 +80,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                         .read(upcomingMoviesProvider.notifier)
                         .loadNextPage(),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                 ],
               );
             },

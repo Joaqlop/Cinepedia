@@ -1,3 +1,4 @@
+import 'package:cinepedia/config/config.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -6,9 +7,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: Colors.black.withOpacity(0.9),
+      backgroundColor: AppColor.vulcan,
       unselectedItemColor: Colors.white,
-      selectedItemColor: Colors.indigo,
+      selectedItemColor: AppColor.royalBlue,
       elevation: 0,
       showUnselectedLabels: false,
       items: const [

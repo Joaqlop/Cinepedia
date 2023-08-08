@@ -8,7 +8,7 @@ class Loader extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: SizedBox(
-        height: 300,
+        height: 200,
         width: 300,
         child: FlareActor(
           'assets/animations/loading_circle.flr',

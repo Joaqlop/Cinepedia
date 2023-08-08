@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AverageColor {
+class RatingColor {
   static averageColor(double voteAverage) {
     Color color = Colors.black;
-    if (voteAverage < 8 && voteAverage >= 7) {
+    if (voteAverage <= 8 && voteAverage >= 6.5) {
       color = Colors.yellow.shade700;
-    } else if (voteAverage < 7 && voteAverage >= 6) {
+    } else if (voteAverage < 6.5 && voteAverage >= 5.5) {
       color = Colors.orange.shade700;
-    } else if (voteAverage < 6 && voteAverage > 0) {
+    } else if (voteAverage < 5.5 && voteAverage > 0) {
       color = Colors.red.shade700;
     } else if (voteAverage == 0) {
       color = Colors.grey.shade800;

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:cinepedia/domain/entities/movie.dart';
-import 'package:cinepedia/presentation/providers/movies/movierepository_provider.dart';
+import 'package:cinepedia/presentation/providers/movies/movie_repository_provider.dart';
 
 final nowPlayingMoviesProvider =
     StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {

@@ -1,9 +1,10 @@
+import 'package:cinepedia/config/config.dart';
 import 'package:flutter/material.dart';
 
-import 'package:animate_do/animate_do.dart';
-import 'package:cinepedia/config/helpers/human_formats.dart';
 import 'package:cinepedia/domain/entities/movie.dart';
 import 'package:cinepedia/presentation/widgets/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 
 class MovieHorizontalListView extends StatefulWidget {
   final List<Movie> movies;
@@ -47,7 +48,7 @@ class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 370,
+      height: 330,
       child: Column(
         children: [
           _Title(
@@ -60,7 +61,7 @@ class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
               itemCount: widget.movies.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) =>
-                  FadeInRight(child: _Slide(movie: widget.movies[index])),
+                  _Slide(movie: widget.movies[index]),
             ),
           ),
         ],
@@ -79,45 +80,30 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     final decoration = BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(10),
     );
 
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(left: 10, right: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
           Text(
             title ?? '',
-            style: const TextStyle(color: Colors.white, fontSize: 20),
+            style: AppTextTheme.whiteTitleLarge,
           ),
           const Spacer(),
           subtitle != null
               ? Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: decoration,
                   child: Text(
                     subtitle!,
-                    style: const TextStyle(color: Colors.black),
+                    style: AppTextTheme.colorfulBodySmall
+                        ?.copyWith(color: AppColor.royalBlue),
                   ))
               : Container(),
-          const SizedBox(width: 5),
-          MaterialButton(
-            minWidth: 60,
-            color: Colors.grey.shade900.withOpacity(0.5),
-            highlightColor: Colors.black,
-            splashColor: Colors.white30,
-            visualDensity: VisualDensity.comfortable,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            onPressed: () {},
-            child: const Text(
-              '>',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ),
         ],
       ),
     );
@@ -131,8 +117,6 @@ class _Slide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Colors.white;
-    final textStyles = Theme.of(context).textTheme;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Column(
@@ -143,7 +127,7 @@ class _Slide extends StatelessWidget {
             width: 150,
             height: 200,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(15),
               child: Image.network(
                 movie.posterPath,
                 fit: BoxFit.cover,
@@ -151,7 +135,10 @@ class _Slide extends StatelessWidget {
                   if (loadingProgress != null) {
                     return const Loader();
                   }
-                  return FadeIn(child: child);
+                  return GestureDetector(
+                    onTap: () => context.push('/movie/${movie.id}'),
+                    child: child.animate().fadeIn(duration: 300.ms),
+                  );
                 },
               ),
             ),
@@ -162,45 +149,20 @@ class _Slide extends StatelessWidget {
             width: 150,
             child: Text(
               movie.title,
-              style: textStyles.titleSmall?.copyWith(color: color),
+              textAlign: TextAlign.center,
+              style: AppTextTheme.whiteBodyMedium,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          // Rating
-          Row(
-            children: [
-              Icon(
-                Icons.star,
-                size: 18,
-                color: AverageColor.averageColor(movie.voteAverage),
-              ),
-              const SizedBox(
-                width: 3,
-              ),
-              Text(
-                movie.voteAverage.toStringAsFixed(1),
-                style: textStyles.bodyMedium?.copyWith(
-                  color: AverageColor.averageColor(movie.voteAverage),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade900,
-                  borderRadius: BorderRadius.circular(7),
-                ),
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  HumanFormats.popularity(movie.popularity),
-                  style: textStyles.bodySmall
-                      ?.copyWith(color: Colors.grey.shade400),
-                ),
-              )
-            ],
-          ),
         ],
       ),
-    );
+    )
+        .animate()
+        .fadeIn(duration: 200.ms)
+        .moveX(begin: 20, duration: 200.ms)
+        .then()
+        .fadeIn(duration: 200.ms)
+        .moveX(begin: 20, duration: 200.ms, delay: 200.ms);
   }
 }
