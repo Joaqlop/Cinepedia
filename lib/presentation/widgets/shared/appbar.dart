@@ -1,4 +1,5 @@
 import 'package:cinepedia/config/config.dart';
+import 'package:cinepedia/domain/domain.dart';
 import 'package:cinepedia/presentation/delegates/search_movie_delegate.dart';
 import 'package:cinepedia/presentation/providers/providers.dart';
 
@@ -37,7 +38,7 @@ class CustomAppBar extends ConsumerWidget {
             onPressed: () {
               final movieRepository = ref.read(movieRepositoryProvider);
 
-              showSearch(
+              showSearch<Movie?>(
                 context: context,
                 delegate: SearchMovieDelegate(
                   searchMovies: movieRepository.searchMovies,

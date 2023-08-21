@@ -136,8 +136,8 @@ class _Slide extends StatelessWidget {
                     return const Loader();
                   }
                   return GestureDetector(
-                    onTap: () => context.push('/movie/${movie.id}'),
-                    child: child.animate().fadeIn(duration: 300.ms),
+                    onTap: () => context.push('/home/0/movie/${movie.id}'),
+                    child: child,
                   );
                 },
               ),
@@ -162,7 +162,6 @@ class _Slide extends StatelessWidget {
         .fadeIn(duration: 200.ms)
         .moveX(begin: 20, duration: 200.ms)
         .then()
-        .fadeIn(duration: 200.ms)
         .moveX(begin: 20, duration: 200.ms, delay: 200.ms);
   }
 }

@@ -60,7 +60,6 @@ class MovieTMDBDataSource extends MovieDataSource {
   List<Movie> _jsonToMovies(Map<String, dynamic> json) {
     final movieResponse = TheMovieDBResponse.fromJson(json);
     final List<Movie> movies = movieResponse.results
-        .where((movie) => movie.posterPath != 'no-poster')
         .map((movie) => MovieMapper.movieDBToEntity(movie))
         .toList();
 

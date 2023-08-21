@@ -1,4 +1,3 @@
-import 'package:cinepedia/config/config.dart';
 import 'package:cinepedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -44,11 +43,11 @@ class _Slide extends StatelessWidget {
   Widget build(BuildContext context) {
     final decoration = BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(
-          color: AppColor.royalBlue,
-          blurRadius: 15,
-          offset: const Offset(3, 3),
+          color: Colors.black,
+          blurRadius: 10,
+          offset: Offset(5, 7),
         ),
       ],
     );
@@ -67,7 +66,7 @@ class _Slide extends StatelessWidget {
                 return const Loader();
               }
               return GestureDetector(
-                onTap: () => context.push('/movie/${movie.id}'),
+                onTap: () => context.push('/home/0/movie/${movie.id}'),
                 child: child.animate().fadeIn(duration: 500.ms),
               );
             },
